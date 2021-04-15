@@ -8,9 +8,9 @@ from dotenv import load_dotenv, find_dotenv
 is_loaded = load_dotenv(find_dotenv())
 print(is_loaded)
 
-LOG_DIR = os.getenv('LOG_DIR')
-print(LOG_DIR)
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(message)s', filename=LOG_DIR)
+LOG_FILE_PATH = os.getenv('LOG_FILE_PATH')
+print(LOG_FILE_PATH)
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(message)s', filename=LOG_FILE_PATH)
 try:
     BUTTON_PIN = int(os.getenv('BUTTON_PIN')) if os.getenv('BUTTON_PIN') is not None else 11
     BOLT_PIN = int(os.getenv('BOLT_PIN')) if os.getenv('BOLT_PIN') is not None else 15
