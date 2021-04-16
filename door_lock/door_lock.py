@@ -4,27 +4,35 @@ from threading import Thread
 import os
 import logging
 from dotenv import load_dotenv, find_dotenv
-
 is_loaded = load_dotenv(find_dotenv())
-print(is_loaded)
 
 LOG_FILE_PATH = os.getenv('LOG_FILE_PATH')
-print(LOG_FILE_PATH)
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(message)s', filename=LOG_FILE_PATH)
+
+if LOG_FILE_PATH:
+    logging.info(f'log file path is {LOG_FILE_PATH}')
+else:
+    logging.info('no log file path')
 try:
     BUTTON_PIN = int(os.getenv('BUTTON_PIN')) if os.getenv('BUTTON_PIN') is not None else 11
     BOLT_PIN = int(os.getenv('BOLT_PIN')) if os.getenv('BOLT_PIN') is not None else 15
+    DURATION_PRESS_OF_BUTTON = float(os.getenv('DURATION_PRESS_OF_BUTTON')) if os.getenv('DURATION_PRESS_OF_BUTTON') is not None else 0.04
+    logging.info('loaded environment variables successfully')
 except:
+    logging.warning('loading environment variables is fail')
     BUTTON_PIN = 11
     BOLT_PIN = 15
+    DURATION_PRESS_OF_BUTTON = 0.04
 
 class DoorLock(Thread):
 
-    def __init__(self, daemon=False, button_pin=BUTTON_PIN, bolt_pin=BOLT_PIN):
+    def __init__(self, daemon=False, button_pin=BUTTON_PIN, bolt_pin=BOLT_PIN, duration=DURATION_PRESS_OF_BUTTON):
         try:
             GPIO.setmode(GPIO.BOARD)
             self.button_pin = button_pin
             self.bolt_pin = bolt_pin
+            self.duration = duration
+            
             self._deactivate = False
             GPIO.setup(self.button_pin, GPIO.IN)
             GPIO.setup(self.bolt_pin, GPIO.OUT)
@@ -61,6 +69,7 @@ class DoorLock(Thread):
                     self.open_door()
                 if self._deactivate:
                     break
+                sleep(self.duration)
         except:
             GPIO.cleanup()
     
