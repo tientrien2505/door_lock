@@ -10,6 +10,8 @@
 > BUTTON_PIN=11 # pin connected to push button
 > 
 > BOLT_PIN=15 # pin connected to lock bolt
+>
+> DURATION_PRESS_OF_BUTTON=0.04 # seconds time to sleep in while loop
 > 
 > LOG_FILE_PATH=./log.log # log file path
 - code example:
