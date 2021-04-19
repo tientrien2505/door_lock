@@ -7,12 +7,8 @@
 
  - config .env file:
 
-> BUTTON_PIN=11 # pin connected to push button
-> 
 > BOLT_PIN=15 # pin connected to lock bolt
 >
-> DURATION_PRESS_OF_BUTTON=0.04 # seconds time to sleep in while loop
-> 
 > LOG_FILE_PATH=./log.log # log file path
 - code example:
 ```python
@@ -22,12 +18,12 @@ from door_lock import DoorLock
 # initial door lock system
 dl = DoorLock()
 
-# deactivate system
-dl.deactivate()
-
-# activate system
-dl.activate()
-
 # open door function
 dl.open_door()
+
+# keep door opening
+dl.keep_door_opening()
+
+# close door
+dl.close_door()
 ```
