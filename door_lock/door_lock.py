@@ -67,6 +67,15 @@ class DoorLock():
         logging.info("door opening")
         sleep(0.3)
         GPIO.output(self.bolt_pin, GPIO.LOW)
+        
+    def keep_door_opening(self):
+        GPIO.output(self.bolt_pin, GPIO.HIGH)
+        logging.info("door opening")
+        
+        
+    def close_door(self):
+        GPIO.output(self.bolt_pin, GPIO.LOW)
+        logging.info("door closing")
 
 if __name__ == '__main__':
     dl = DoorLock()
