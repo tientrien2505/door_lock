@@ -13,17 +13,23 @@ if LOG_FILE_PATH:
 else:
     logging.info('no log file path')
 try:
+    BUTTON_PIN = int(os.getenv('BUTTON_PIN')) if os.getenv('BUTTON_PIN') is not None else 11
     BOLT_PIN = int(os.getenv('BOLT_PIN')) if os.getenv('BOLT_PIN') is not None else 15
     DURATION_PRESS_OF_BUTTON = int(os.getenv('DURATION_PRESS_OF_BUTTON')) if os.getenv('DURATION_PRESS_OF_BUTTON') is not None else 0.04
     logging.info('loaded environment variables successfully')
 except:
     logging.warning('loading environment variables is fail')
+    BUTTON_PIN = 11
     BOLT_PIN = 15
+    DURATION_PRESS_OF_BUTTON = 40
+
+# class DoorLock(Thread):
 class DoorLock():
 
-    def __init__(self, bolt_pin=BOLT_PIN):
+    def __init__(self, daemon=False, button_pin=BUTTON_PIN, bolt_pin=BOLT_PIN, duration=DURATION_PRESS_OF_BUTTON):
         try:
             GPIO.setmode(GPIO.BOARD)
+            self.button_pin = button_pin
             self.bolt_pin = bolt_pin
             self.duration = duration
             
@@ -55,9 +61,11 @@ class DoorLock():
         else:
             logging.info('door lock system is still running')
     
+    
     def open_door(self):
         GPIO.output(self.bolt_pin, GPIO.HIGH)
         logging.info("door opening")
+        sleep(0.3)
         GPIO.output(self.bolt_pin, GPIO.LOW)
         
     def keep_door_opening(self):
@@ -70,7 +78,6 @@ class DoorLock():
         logging.info("door closing")
 
 if __name__ == '__main__':
-    from time import sleep
     dl = DoorLock()
     while True:
         sleep(1000)
