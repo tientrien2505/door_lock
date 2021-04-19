@@ -7,6 +7,8 @@
 
  - config .env file:
 
+> BUTTON_PIN=11 # pin connected to push button
+> 
 > BOLT_PIN=15 # pin connected to lock bolt
 >
 > DURATION_PRESS_OF_BUTTON=40 # an integer bounctime in milliseconds
